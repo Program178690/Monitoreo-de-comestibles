@@ -1,0 +1,150 @@
+15:48:29] EVENTOS
+desapareció laptop
+
+[15:48:29] EVENTOS
+apareció laptop
+
+[15:48:30] EVENTOS
+desapareció laptop
+
+[15:48:30] EVENTOS
+apareció laptop
+
+[15:48:30] EVENTOS
+desapareció laptop
+
+[15:48:31] EVENTOS
+apareció laptop
+
+[15:48:31] EVENTOS
+apareció laptop
+
+[15:48:32] EVENTOS
+desapareció laptop
+
+[15:48:32] EVENTOS
+apareció laptop
+
+[15:48:33] EVENTOS
+desapareció laptop
+
+[15:48:56] EVENTOS
+apareció person
+
+[15:48:57] EVENTOS
+desapareció person
+
+[15:49:09] EVENTOS
+apareció person
+
+[15:49:10] EVENTOS
+desapareció person
+
+[15:49:11] EVENTOS
+apareció laptop
+
+[15:49:12] EVENTOS
+apareció laptop
+
+[15:49:12] EVENTOS
+desapareció laptop
+
+[15:49:13] EVENTOS
+apareció laptop
+
+[15:49:13] EVENTOS
+apareció laptop
+
+[15:49:14] EVENTOS
+desapareció laptop
+
+[15:49:14] EVENTOS
+apareció laptop
+
+[15:49:14] EVENTOS
+desapareció laptop
+
+[15:49:15] EVENTOS
+apareció laptop
+
+[15:49:15] EVENTOS
+apareció laptop
+
+[15:49:16] EVENTOS
+apareció person
+
+[15:49:16] EVENTOS
+apareció laptop
+
+[15:49:16] EVENTOS
+desapareció person
+
+[15:49:16] EVENTOS
+apareció laptop
+
+[15:49:16] EVENTOS
+apareció person
+
+[15:49:17] EVENTOS
+apareció laptop
+
+[15:49:17] EVENTOS
+desapareció person
+
+[15:49:17] EVENTOS
+desapareció laptop
+
+[15:49:18] EVENTOS
+apareció laptop
+
+[15:49:18] EVENTOS
+apareció laptop
+
+[15:49:19] EVENTOS
+apareció laptop
+
+[15:49:19] EVENTOS
+desapareció laptop
+
+[15:49:20] EVENTOS
+apareció laptop
+
+[15:49:20] EVENTOS
+desapareció laptop
+
+[15:49:20] EVENTOS
+apareció laptop
+
+[15:49:21] EVENTOS
+desapareció laptop
+
+[15:49:21] EVENTOS
+apareció laptop
+
+[15:49:22] EVENTOS
+desapareció laptop
+
+[15:49:22] EVENTOS
+apareció laptop
+
+[15:49:22] EVENTOS
+apareció laptop
+
+[15:49:22] EVENTOS
+desapareció laptop
+
+[15:49:26] EVENTOS
+apareció laptop
+
+[15:49:27] EVENTOS
+apareció laptop
+
+[15:49:27] EVENTOS
+desapareció laptop
+
+[15:49:29] EVENTOS
+apareció cat
+
+[
+[15:49:29] EVENTOS
+desapareció cat

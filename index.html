@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>YOLO Dashboard</title>
+  <style>
+    body {
+      background: #0f0f0f;
+      color: #00ff88;
+      font-family: monospace;
+      padding: 20px;
+    }
+
+    h1 {
+      color: white;
+    }
+
+    .box {
+      border: 1px solid #00ff88;
+      padding: 10px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>📡 YOLO CONTROL DASHBOARD</h1>
+
+  <div class="box">
+    <h2>📦 Inventario</h2>
+    <pre id="inventory">Cargando...</pre>
+  </div>
+
+  <div class="box">
+    <h2>🧠 Eventos</h2>
+    <pre id="history">Cargando...</pre>
+  </div>
+
+  <script>
+    async function updateData() {
+      try {
+        const invRes = await fetch("http://localhost:8000/inventory");
+        const inventory = await invRes.json();
+
+        document.getElementById("inventory").textContent =
+          JSON.stringify(inventory, null, 2);
+
+        const histRes = await fetch("http://localhost:8000/history");
+        const history = await histRes.json();
+
+        document.getElementById("history").textContent =
+          JSON.stringify(history, null, 2);
+
+      } catch (err) {
+        console.error("Error conectando con API:", err);
+      }
+    }
+
+    setInterval(updateData, 1000);
+    updateData();
+  </script>
+</body>
+</html>
