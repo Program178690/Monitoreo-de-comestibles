@@ -42,3 +42,8 @@ ultralytics==8.4.48
 ultralytics-thop==2.0.19
 urllib3==2.7.0
 uvicorn==0.46.0
+ultralytics>=8.0.0
+requests>=2.31.0
+fastapi>=0.100.0
+uvicorn>=0.23.0
+pydantic>=2.0.0
