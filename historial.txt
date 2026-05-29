@@ -1,106 +1,4 @@
-15:48:29] EVENTOS
-desapareció laptop
-
-[15:48:29] EVENTOS
-apareció laptop
-
-[15:48:30] EVENTOS
-desapareció laptop
-
-[15:48:30] EVENTOS
-apareció laptop
-
-[15:48:30] EVENTOS
-desapareció laptop
-
-[15:48:31] EVENTOS
-apareció laptop
-
-[15:48:31] EVENTOS
-apareció laptop
-
-[15:48:32] EVENTOS
-desapareció laptop
-
-[15:48:32] EVENTOS
-apareció laptop
-
-[15:48:33] EVENTOS
-desapareció laptop
-
-[15:48:56] EVENTOS
-apareció person
-
-[15:48:57] EVENTOS
-desapareció person
-
-[15:49:09] EVENTOS
-apareció person
-
-[15:49:10] EVENTOS
-desapareció person
-
-[15:49:11] EVENTOS
-apareció laptop
-
-[15:49:12] EVENTOS
-apareció laptop
-
-[15:49:12] EVENTOS
-desapareció laptop
-
-[15:49:13] EVENTOS
-apareció laptop
-
-[15:49:13] EVENTOS
-apareció laptop
-
-[15:49:14] EVENTOS
-desapareció laptop
-
-[15:49:14] EVENTOS
-apareció laptop
-
-[15:49:14] EVENTOS
-desapareció laptop
-
-[15:49:15] EVENTOS
-apareció laptop
-
-[15:49:15] EVENTOS
-apareció laptop
-
-[15:49:16] EVENTOS
-apareció person
-
-[15:49:16] EVENTOS
-apareció laptop
-
-[15:49:16] EVENTOS
-desapareció person
-
-[15:49:16] EVENTOS
-apareció laptop
-
-[15:49:16] EVENTOS
-apareció person
-
-[15:49:17] EVENTOS
-apareció laptop
-
-[15:49:17] EVENTOS
-desapareció person
-
-[15:49:17] EVENTOS
-desapareció laptop
-
-[15:49:18] EVENTOS
-apareció laptop
-
-[15:49:18] EVENTOS
-apareció laptop
-
-[15:49:19] EVENTOS
+15:49:19] EVENTOS
 apareció laptop
 
 [15:49:19] EVENTOS
@@ -145,6 +43,109 @@ desapareció laptop
 [15:49:29] EVENTOS
 apareció cat
 
-[
 [15:49:29] EVENTOS
 desapareció cat
+
+[20:29:48] EVENTOS
+apareció person
+
+[20:29:48] EVENTOS
+desapareció person
+
+[20:29:50] EVENTOS
+apareció person
+
+[20:29:50] EVENTOS
+desapareció person
+
+[20:29:50] EVENTOS
+apareció laptop
+
+[20:29:51] EVENTOS
+desapareció laptop
+
+[20:29:51] EVENTOS
+apareció laptop
+
+[20:29:51] EVENTOS
+apareció tv
+
+[20:29:51] EVENTOS
+desapareció laptop
+
+[20:29:51] EVENTOS
+desapareció tv
+
+[20:29:51] EVENTOS
+apareció tv
+
+[20:29:51] EVENTOS
+apareció cup
+
+[20:29:52] EVENTOS
+desapareció cup
+
+[20:29:52] EVENTOS
+desapareció tv
+
+[20:30:03] EVENTOS
+apareció laptop
+
+[20:30:03] EVENTOS
+apareció laptop
+
+[20:30:03] EVENTOS
+desapareció laptop
+
+[20:30:04] EVENTOS
+apareció person
+
+[20:30:04] EVENTOS
+desapareció person
+
+[20:31:23] EVENTOS
+apareció laptop
+
+[20:31:24] EVENTOS
+desapareció laptop
+
+[20:31:24] EVENTOS
+apareció laptop
+
+[20:31:26] EVENTOS
+apareció cup
+
+[20:31:27] EVENTOS
+desapareció cup
+
+[20:31:27] EVENTOS
+desapareció laptop
+
+[20:31:27] EVENTOS
+apareció laptop
+
+[20:31:27] EVENTOS
+apareció tv
+
+[20:31:27] EVENTOS
+apareció tv
+desapareció laptop
+
+[20:31:28] EVENTOS
+apareció cell phone
+
+[20:31:28] EVENTOS
+desapareció tv
+
+[20:31:28] EVENTOS
+apareció cell phone
+
+[20:31:28] EVENTOS
+desapareció cell phone
+
+[20:31:28] EVENTOS
+apareció tv
+
+[
+[20:31:29] EVENTOS
+desapareció tv

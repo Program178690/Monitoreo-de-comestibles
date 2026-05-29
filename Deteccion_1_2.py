@@ -11,7 +11,7 @@ model = YOLO("yolov8n.pt")
 # =========================
 # URL IP WEBCAM
 # =========================
-url = "http://10.204.173.149:8080/video"
+url = "http://100.81.71.252:8080/video"
 cap = cv2.VideoCapture(url)
 
 # =========================
