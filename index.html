@@ -3,61 +3,606 @@
 <head>
   <meta charset="UTF-8">
   <title>YOLO Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Bebas+Neue&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --bg: #080c10;
+      --surface: #0d1117;
+      --surface2: #111820;
+      --border: rgba(0, 230, 120, 0.15);
+      --accent: #00e678;
+      --accent2: #00b4ff;
+      --accent3: #ff4f6a;
+      --text: #c9d5e0;
+      --text-dim: #4a6070;
+      --font-display: 'Bebas Neue', sans-serif;
+      --font-mono: 'Space Mono', monospace;
+      --font-body: 'Inter', sans-serif;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
     body {
-      background: #0f0f0f;
-      color: #00ff88;
-      font-family: monospace;
-      padding: 20px;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Background grid */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,230,120,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,230,120,0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Radial glow */
+    body::after {
+      content: '';
+      position: fixed;
+      top: -200px;
+      left: -200px;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(0,230,120,0.04) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .dashboard {
+      position: relative;
+      z-index: 1;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 32px 24px;
+    }
+
+    /* ── HEADER ── */
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 36px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .logo-icon {
+      width: 42px;
+      height: 42px;
+      background: linear-gradient(135deg, rgba(0,230,120,0.2), rgba(0,180,255,0.1));
+      border: 1px solid rgba(0,230,120,0.4);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .logo-icon::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(45deg, transparent, rgba(0,230,120,0.1), transparent);
+      animation: shimmer 3s infinite;
+    }
+
+    @keyframes shimmer {
+      0% { transform: translateX(-100%) rotate(45deg); }
+      100% { transform: translateX(100%) rotate(45deg); }
     }
 
     h1 {
+      font-family: var(--font-display);
+      font-size: 2.2rem;
+      letter-spacing: 3px;
       color: white;
+      line-height: 1;
     }
 
-    .box {
-      border: 1px solid #00ff88;
-      padding: 10px;
-      margin-top: 10px;
+    h1 span {
+      color: var(--accent);
+    }
+
+    .subtitle {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: var(--text-dim);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-top: 3px;
+    }
+
+    .status-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(0,230,120,0.06);
+      border: 1px solid rgba(0,230,120,0.2);
+      border-radius: 20px;
+      padding: 7px 16px;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--accent);
+      letter-spacing: 1px;
+    }
+
+    .dot {
+      width: 7px;
+      height: 7px;
+      background: var(--accent);
+      border-radius: 50%;
+      animation: pulse 1.5s infinite;
+      box-shadow: 0 0 6px var(--accent);
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.8); }
+    }
+
+    /* ── STATS ROW ── */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px 20px;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.3s;
+    }
+
+    .stat-card:hover {
+      border-color: rgba(0,230,120,0.35);
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), transparent);
+    }
+
+    .stat-label {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      color: var(--text-dim);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .stat-value {
+      font-family: var(--font-display);
+      font-size: 2.4rem;
+      color: white;
+      letter-spacing: 1px;
+      line-height: 1;
+    }
+
+    .stat-value.accent { color: var(--accent); }
+    .stat-value.accent2 { color: var(--accent2); }
+
+    .stat-unit {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: var(--text-dim);
+      margin-top: 4px;
+    }
+
+    /* ── MAIN GRID ── */
+    .main-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.6fr;
+      gap: 20px;
+    }
+
+    /* ── PANEL ── */
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(255,255,255,0.02);
+    }
+
+    .panel-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text);
+    }
+
+    .panel-icon {
+      font-size: 14px;
+    }
+
+    .panel-tag {
+      font-family: var(--font-mono);
+      font-size: 0.58rem;
+      background: rgba(0,230,120,0.08);
+      border: 1px solid rgba(0,230,120,0.2);
+      color: var(--accent);
+      padding: 3px 9px;
+      border-radius: 10px;
+      letter-spacing: 1px;
+    }
+
+    /* ── INVENTORY ── */
+    .inventory-body {
+      padding: 16px;
+    }
+
+    .inv-empty {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text-dim);
+      text-align: center;
+      padding: 30px 0;
+    }
+
+    .inv-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 11px 14px;
+      margin-bottom: 8px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      transition: all 0.25s;
+      animation: slideIn 0.3s ease;
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(-10px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+
+    .inv-item:hover {
+      border-color: rgba(0,230,120,0.3);
+      background: rgba(0,230,120,0.04);
+    }
+
+    .inv-item:last-child { margin-bottom: 0; }
+
+    .inv-name {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--text);
+      text-transform: capitalize;
+    }
+
+    .inv-count {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .inv-bar {
+      width: 40px;
+      height: 4px;
+      background: rgba(255,255,255,0.06);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .inv-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      border-radius: 2px;
+      transition: width 0.5s ease;
+    }
+
+    .inv-num {
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      color: var(--accent);
+      min-width: 24px;
+      text-align: right;
+    }
+
+    /* ── EVENTS ── */
+    .events-body {
+      height: 380px;
+      overflow-y: auto;
+      padding: 14px 16px;
+      scroll-behavior: smooth;
+    }
+
+    .events-body::-webkit-scrollbar { width: 4px; }
+    .events-body::-webkit-scrollbar-track { background: transparent; }
+    .events-body::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+    .event-row {
+      display: flex;
+      gap: 12px;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.03);
+      align-items: flex-start;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    .event-row:last-child { border-bottom: none; }
+
+    .event-time {
+      font-family: var(--font-mono);
+      font-size: 0.62rem;
+      color: var(--text-dim);
+      white-space: nowrap;
+      padding-top: 1px;
+      min-width: 58px;
+    }
+
+    .event-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      margin-top: 4px;
+      flex-shrink: 0;
+    }
+
+    .event-dot.apareció  { background: var(--accent); box-shadow: 0 0 5px var(--accent); }
+    .event-dot.desapareció { background: var(--accent3); box-shadow: 0 0 5px var(--accent3); }
+    .event-dot.other { background: var(--accent2); }
+
+    .event-text {
+      font-family: var(--font-body);
+      font-size: 0.75rem;
+      color: var(--text);
+      font-weight: 300;
+      line-height: 1.4;
+    }
+
+    .event-text .verb {
+      font-weight: 500;
+    }
+
+    .verb.apareció  { color: var(--accent); }
+    .verb.desapareció { color: var(--accent3); }
+
+    .event-text .obj { color: white; font-weight: 500; }
+
+    /* ── LAST UPDATE ── */
+    .last-update {
+      text-align: center;
+      font-family: var(--font-mono);
+      font-size: 0.58rem;
+      color: var(--text-dim);
+      letter-spacing: 1px;
+      margin-top: 20px;
+    }
+
+    #update-time { color: var(--accent2); }
+
+    /* ── ERROR TOAST ── */
+    #error-toast {
+      display: none;
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: rgba(255,79,106,0.1);
+      border: 1px solid rgba(255,79,106,0.3);
+      color: var(--accent3);
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      padding: 10px 18px;
+      border-radius: 8px;
+      letter-spacing: 1px;
+      z-index: 100;
+    }
+
+    @media (max-width: 700px) {
+      .main-grid { grid-template-columns: 1fr; }
+      .stats-row { grid-template-columns: repeat(3, 1fr); }
+      h1 { font-size: 1.6rem; }
     }
   </style>
 </head>
-
 <body>
-  <h1>📡 YOLO CONTROL DASHBOARD</h1>
+<div class="dashboard">
 
-  <div class="box">
-    <h2>📦 Inventario</h2>
-    <pre id="inventory">Cargando...</pre>
+  <!-- HEADER -->
+  <header>
+    <div class="header-left">
+      <div class="logo-icon">🎯</div>
+      <div>
+        <h1>YOLO <span>CTRL</span></h1>
+        <div class="subtitle">Sistema de detección en tiempo real</div>
+      </div>
+    </div>
+    <div class="status-badge">
+      <span class="dot"></span>
+      EN VIVO
+    </div>
+  </header>
+
+  <!-- STATS -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-label">Objetos únicos</div>
+      <div class="stat-value accent" id="stat-unique">—</div>
+      <div class="stat-unit">tipos detectados</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Total en escena</div>
+      <div class="stat-value" id="stat-total">—</div>
+      <div class="stat-unit">instancias activas</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Eventos log</div>
+      <div class="stat-value accent2" id="stat-events">—</div>
+      <div class="stat-unit">registros totales</div>
+    </div>
   </div>
 
-  <div class="box">
-    <h2>🧠 Eventos</h2>
-    <pre id="history">Cargando...</pre>
+  <!-- MAIN -->
+  <div class="main-grid">
+
+    <!-- INVENTARIO -->
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-title">
+          <span class="panel-icon">📦</span>
+          Inventario
+        </div>
+        <span class="panel-tag">LIVE</span>
+      </div>
+      <div class="inventory-body" id="inventory-body">
+        <div class="inv-empty">Conectando...</div>
+      </div>
+    </div>
+
+    <!-- EVENTOS -->
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-title">
+          <span class="panel-icon">🧠</span>
+          Log de Eventos
+        </div>
+        <span class="panel-tag" id="event-count">0 reg.</span>
+      </div>
+      <div class="events-body" id="events-body">
+      </div>
+    </div>
+
   </div>
 
-  <script>
-    async function updateData() {
-      try {
-        const invRes = await fetch("http://localhost:8000/inventory");
-        const inventory = await invRes.json();
+  <div class="last-update">Última actualización: <span id="update-time">—</span></div>
+</div>
 
-        document.getElementById("inventory").textContent =
-          JSON.stringify(inventory, null, 2);
+<div id="error-toast">⚠ Sin conexión con la API</div>
 
-        const histRes = await fetch("http://localhost:8000/history");
-        const history = await histRes.json();
+<script>
+  let lastHistoryLength = 0;
 
-        document.getElementById("history").textContent =
-          JSON.stringify(history, null, 2);
+  function parseEvent(raw) {
+    // raw: "[18:34:50] apareció bed"
+    const match = raw.match(/\[(\d{2}:\d{2}:\d{2})\]\s+(\S+)\s+(.*)/);
+    if (!match) return { time: '', verb: '', obj: raw };
+    return { time: match[1], verb: match[2], obj: match[3] };
+  }
 
-      } catch (err) {
-        console.error("Error conectando con API:", err);
-      }
+  function renderInventory(inv) {
+    const body = document.getElementById('inventory-body');
+    const entries = Object.entries(inv);
+    if (entries.length === 0) {
+      body.innerHTML = '<div class="inv-empty">No hay objetos detectados</div>';
+      return;
     }
+    const max = Math.max(...entries.map(e => e[1]));
+    body.innerHTML = entries.map(([name, count]) => `
+      <div class="inv-item">
+        <span class="inv-name">${name}</span>
+        <div class="inv-count">
+          <div class="inv-bar">
+            <div class="inv-bar-fill" style="width:${Math.min(100, (count/max)*100)}%"></div>
+          </div>
+          <span class="inv-num">${count}</span>
+        </div>
+      </div>
+    `).join('');
 
-    setInterval(updateData, 1000);
-    updateData();
-  </script>
+    document.getElementById('stat-unique').textContent = entries.length;
+    document.getElementById('stat-total').textContent = entries.reduce((s, [,v]) => s+v, 0);
+  }
+
+  function renderEvents(history) {
+    const body = document.getElementById('events-body');
+    const tag  = document.getElementById('event-count');
+    const isAtBottom = body.scrollHeight - body.scrollTop <= body.clientHeight + 40;
+
+    document.getElementById('stat-events').textContent = history.length;
+    tag.textContent = history.length + ' reg.';
+
+    if (history.length === lastHistoryLength) return;
+    lastHistoryLength = history.length;
+
+    body.innerHTML = history.slice().reverse().map(raw => {
+      const { time, verb, obj } = parseEvent(raw);
+      const cls = verb === 'apareció' ? 'apareció' : verb === 'desapareció' ? 'desapareció' : 'other';
+      return `
+        <div class="event-row">
+          <span class="event-time">${time}</span>
+          <span class="event-dot ${cls}"></span>
+          <span class="event-text">
+            <span class="verb ${cls}">${verb}</span>
+            <span class="obj"> ${obj}</span>
+          </span>
+        </div>`;
+    }).join('');
+
+    if (isAtBottom) body.scrollTop = 0;
+  }
+
+  async function updateData() {
+    const toast = document.getElementById('error-toast');
+    try {
+      const [invRes, histRes] = await Promise.all([
+        fetch("http://localhost:8000/inventory"),
+        fetch("http://localhost:8000/history")
+      ]);
+      const inventory = await invRes.json();
+      const history   = await histRes.json();
+
+      renderInventory(inventory);
+      renderEvents(history);
+
+      const now = new Date();
+      document.getElementById('update-time').textContent =
+        now.toLocaleTimeString('es-GT', { hour12: false });
+      toast.style.display = 'none';
+    } catch (err) {
+      toast.style.display = 'block';
+      console.error("Error conectando con API:", err);
+    }
+  }
+
+  setInterval(updateData, 1000);
+  updateData();
+</script>
 </body>
 </html>

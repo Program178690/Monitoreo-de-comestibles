@@ -11,7 +11,7 @@ model = YOLO("yolov8n.pt")
 # =========================
 # URL IP WEBCAM
 # =========================
-url = "http://100.81.71.252:8080/video"
+url = "http://10.74.168.48:8080/video"
 cap = cv2.VideoCapture(url)
 
 # =========================
@@ -25,10 +25,9 @@ cv2.resizeWindow("YOLO Inventario", 680, 420)
 # =========================
 last_detected = {}
 
-# 🔥 NUEVO: memoria inteligente
+# memoria inteligente
 object_memory = {}
 missing_threshold = 5  # frames para considerar desaparecido
-
 frame_count = 0
 frame_id = 0
 
@@ -36,9 +35,7 @@ frame_id = 0
 # LOOP PRINCIPAL
 # =========================
 while True:
-
     ret, frame = cap.read()
-
     if not ret:
         print("No se pudo recibir video")
         break
@@ -57,76 +54,59 @@ while True:
     # =========================
     results = model(frame, imgsz=320, conf=0.5)
     names = results[0].names
-
     current_detected = {}
 
     for box in results[0].boxes:
         class_id = int(box.cls[0])
         object_name = names[class_id]
-
         current_detected[object_name] = current_detected.get(object_name, 0) + 1
 
     # =========================
-    # 🔥 DETECCIÓN DE EVENTOS INTELIGENTES
+    # DETECCIÓN DE EVENTOS INTELIGENTES
     # =========================
     events = []
 
     # actualizar memoria de objetos vistos
     for obj in current_detected:
         object_memory[obj] = frame_id
-
         # detectar aparición (solo si es nuevo)
         if obj not in last_detected:
             events.append(f"apareció {obj}")
 
-    # detectar desapariciones
+    # detectar desapariciones con threshold
     for obj in list(object_memory.keys()):
         last_seen = object_memory[obj]
-
         if frame_id - last_seen > missing_threshold:
             events.append(f"desapareció {obj}")
             del object_memory[obj]
 
     # =========================
-    # ENVIAR A FASTAPI (solo inventario actual)
+    # INVENTARIO ESTABILIZADO (usa object_memory)
+    # Solo contiene objetos que han sobrevivido el threshold
     # =========================
+    stable_inventory = {obj: current_detected.get(obj, 1) for obj in object_memory}
+
     try:
         requests.post(
             "http://127.0.0.1:8000/inventory",
-            json={"data": current_detected}
+            json={"data": stable_inventory}
         )
     except Exception as e:
-        print("Error enviando a FastAPI:", e)
+        print("Error enviando inventario a FastAPI:", e)
 
     # =========================
-    # HISTORIAL (SOLO EVENTOS INTELIGENTES)
+    # ENVIAR EVENTOS AL BACKEND
     # =========================
     if events:
-
         now = datetime.now().strftime("%H:%M:%S")
-
-        try:
-            with open("historial.txt", "r") as history:
-                lines = history.readlines()
-        except FileNotFoundError:
-            lines = []
-
-        new_entry = [f"\n[{now}] EVENTOS\n"]
-
         for e in events:
-            new_entry.append(e + "\n")
-
-        events_history = "".join(lines).split("\n[")
-        events_history = [e for e in events_history if e.strip()]
-        events_history.append("".join(new_entry))
-        events_history = events_history[-50:]
-
-        with open("historial.txt", "w") as history:
-            for i, event in enumerate(events_history):
-                if i != 0 and not event.startswith("["):
-                    history.write("\n[" + event)
-                else:
-                    history.write(event)
+            try:
+                requests.post(
+                    "http://127.0.0.1:8000/history",
+                    json={"event": f"[{now}] {e}"}
+                )
+            except Exception as ex:
+                print("Error enviando evento a FastAPI:", ex)
 
         # terminal
         print("\nEVENTOS:")

@@ -1,8 +1,5 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
-from datetime import datetime
-
-# ⭐ NUEVO: CORS para conectar con HTML/JS
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
@@ -19,51 +16,40 @@ app.add_middleware(
 )
 
 inventory = {}
-history = []  # 🔥 aquí guardamos eventos
+history = []
 
 class InventoryData(BaseModel):
     data: dict
 
+class EventData(BaseModel):
+    event: str
+
+# =========================
+# INVENTARIO
+# =========================
 @app.post("/inventory")
 def update_inventory(payload: InventoryData):
-
-    global inventory, history
-
-    new_data = payload.data
-    now = datetime.now().strftime("%H:%M:%S")
-
-    # =========================
-    # DETECTAR CAMBIOS
-    # =========================
-    appeared = []
-    disappeared = []
-
-    for obj, count in new_data.items():
-        if obj not in inventory:
-            appeared.append(obj)
-        elif inventory[obj] != count:
-            appeared.append(obj)
-
-    for obj in inventory:
-        if obj not in new_data:
-            disappeared.append(obj)
-
-    # =========================
-    # EVENTOS
-    # =========================
-    for obj in appeared:
-        history.append(f"[{now}] apareció {obj}")
-
-    for obj in disappeared:
-        history.append(f"[{now}] desapareció {obj}")
-
-    inventory = new_data
-
+    global inventory
+    # El inventario ya viene estabilizado desde Deteccion_1_2.py
+    # No se generan eventos aquí para evitar duplicados
+    inventory = payload.data
     return {"status": "ok"}
 
 @app.get("/inventory")
 def get_inventory():
     return inventory
+
+# =========================
+# HISTORIAL
+# =========================
+@app.post("/history")
+def add_event(payload: EventData):
+    global history
+    history.append(payload.event)
+    # Mantener solo los últimos 200 eventos
+    if len(history) > 200:
+        history = history[-200:]
+    return {"status": "ok"}
 
 @app.get("/history")
 def get_history():
